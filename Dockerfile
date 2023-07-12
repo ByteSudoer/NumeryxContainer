@@ -22,6 +22,7 @@ WORKDIR /app
 COPY . /app
 
 RUN composer install
+RUN npm install
 
 EXPOSE 8000
 CMD symfony server:start
