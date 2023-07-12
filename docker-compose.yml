@@ -19,8 +19,8 @@ services:
       - 3036
     environment:
       MYSQL_ROOT_PASSWORD: root
-    # volumes:
-    #   - mysql:/var/lib/mysql
+    volumes:
+      - ./mysql:/var/lib/mysql
     restart: always
 
   phpmyadmin:
@@ -31,4 +31,4 @@ services:
     environment:
       - PMA_ARBITRARY=1
 # volumes:
-#   - mysql
+#   mysql: {}
