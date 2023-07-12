@@ -5,7 +5,8 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends\
             libmcrypt-dev \
             libicu-dev libpng-dev libxml2-dev \
             zip unzip libzip-dev \
-            git libonig-dev libxslt-dev wget
+            git libonig-dev libxslt-dev wget\
+            npm nodejs
 
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash
 
@@ -25,4 +26,5 @@ RUN composer install
 RUN npm install
 
 EXPOSE 8000
-CMD symfony server:start
+CMD ["/bin/bash","-c","symfony server:start; npm run watch"]
+# CMD symfony server:start npm run watch
