@@ -2,7 +2,7 @@
 
 ## Installation
 
-Executez cette pour le deploiement ou à chaque modification du fichier **Dockerfile**:
+Executez cette commande pour le deploiement ou à chaque modification du fichier **Dockerfile**:
 ```bash 
 docker compose build
 ```
@@ -22,7 +22,7 @@ Pour lancer le service Web php/symfony seulement:
 ```bash
 docker compose up web
 ```
-Pour lancer l'instance seulement:
+Pour lancer l'instance SQL seulement:
 ```bash
 docker compose up mysql
 ```
@@ -30,11 +30,11 @@ Pour lancer l'instance PHPMyadmin seulement:
 ```bash
 docker compose up phpmyadmin
 ```
-Pour accèder à l'instance Web et executer des commandes:
+Pour accèder à l'instance Web et exécuter des commandes:
 ```bash
 docker compose up --build 
 docker compose exec web bash
-## Exp des commandes
+## Expl des commandes
 $ compose install
 $ npm install
 $ composer require <---->
