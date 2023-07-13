@@ -23,21 +23,17 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-install pdo pdo_mysql intl zip mbstring
 
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 /var/www/html
+
 COPY . /var/www/html
 WORKDIR /var/www/html
 
-RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 755 /var/www/html
-# RUN composer clear-cache
-RUN composer install
-RUN npm install
-# RUN npm run watch &
 
 EXPOSE 8000
-# Start server with no hot-reload
-# CMD ["symfony", "server:start"]
-# Start server with hot-reload
-# CMD ["./server_notify.sh"]
+
+RUN chmod +x ./entrypoint.sh
+RUN ./entrypoint.sh
 CMD symfony server:start & \
     npm run watch &\
     while inotifywait -mq -e modify -e create -e delete -e move /var/www/html; do \
