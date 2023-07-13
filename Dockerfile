@@ -39,6 +39,7 @@ EXPOSE 8000
 # Start server with hot-reload
 # CMD ["./server_notify.sh"]
 CMD symfony server:start & \
+    npm run watch &\
     while inotifywait -mq -e modify -e create -e delete -e move /var/www/html; do \
         symfony server:stop && \
         symfony server:start; \
