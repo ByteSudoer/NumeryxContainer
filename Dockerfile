@@ -33,8 +33,7 @@ WORKDIR /var/www/html
 EXPOSE 8000
 
 RUN chmod +x ./entrypoint.sh
-RUN ./entrypoint.sh
-CMD symfony server:start & \
+CMD ./entrypoint.sh && symfony server:start & \
     npm run watch &\
     while inotifywait -mq -e modify -e create -e delete -e move /var/www/html; do \
         symfony server:stop && \
