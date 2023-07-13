@@ -18,6 +18,27 @@ Pour supprimer le container:
 ```bash
 docker compose rm
 ```
+Pour lancer le service Web php/symfony seulement:
+```bash
+docker compose up web
+```
+Pour lancer l'instance seulement:
+```bash
+docker compose up mysql
+```
+Pour lancer l'instance PHPMyadmin seulement:
+```bash
+docker compose up phpmyadmin
+```
+Pour accèder à l'instance Web et executer des commandes:
+```bash
+docker compose up --build 
+docker compose exec web bash
+## Exp des commandes
+$ compose install
+$ npm install
+$ composer require <---->
+```
 
 Changez cette ligne dans le fichier `.env` pour connecter MySQL avec php/Symfony
 ```.env

@@ -8,10 +8,14 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends\
             git libonig-dev libxslt-dev wget\
             npm nodejs
 
-RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash
 
-RUN apt-get install symfony-cli
-RUN echo "en_US.UTF8 UTF8" > /etc/locale.gen && \
+# inotify-tools for hot-reload
+RUN apt-get install -y inotify-tools
+
+RUN curl -sS https://get.symfony.com/cli/installer | bash
+RUN mv /root/.symfony5/bin/symfony /usr/local/bin/
+
+RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen
 
@@ -19,12 +23,23 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-install pdo pdo_mysql intl zip mbstring
 
-WORKDIR /app
-COPY . /app
+COPY . /var/www/html
+WORKDIR /var/www/html
 
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 /var/www/html
+# RUN composer clear-cache
 RUN composer install
 RUN npm install
+# RUN npm run watch &
 
 EXPOSE 8000
-CMD ["/bin/bash","-c","symfony server:start; npm run watch"]
-# CMD symfony server:start npm run watch
+# Start server with no hot-reload
+# CMD ["symfony", "server:start"]
+# Start server with hot-reload
+# CMD ["./server_notify.sh"]
+CMD symfony server:start & \
+    while inotifywait -mq -e modify -e create -e delete -e move /var/www/html; do \
+        symfony server:stop && \
+        symfony server:start; \
+    done

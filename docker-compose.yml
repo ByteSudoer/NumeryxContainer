@@ -1,4 +1,4 @@
-#version: '3'
+version: '3'
 
 services:
   web:
@@ -8,7 +8,8 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - .:/var/www/html
+      - ./:/var/www/html
+      # - ./vhosts/vhosts.conf
     depends_on:
       - mysql
       - phpmyadmin
@@ -20,7 +21,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - ./mysql:/var/lib/mysql
+      - mysql:/var/lib/mysql
     restart: always
 
   phpmyadmin:
@@ -30,5 +31,6 @@ services:
       - 80:80
     environment:
       - PMA_ARBITRARY=1
-# volumes:
-#   mysql: {}
+volumes:
+  mysql:
+  # app:
